@@ -2,14 +2,14 @@
 
 Route::get('/home', function () {
     if (session('status')) {
-        return redirect()->route('admin.shops.index')->with('status', session('status'));
+        return redirect()->route('admin.maps.index')->with('status', session('status'));
     }
 
-    return redirect()->route('admin.shops.index');
+    return redirect()->route('admin.maps.index');
 });
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('shop/{shop}', 'HomeController@show')->name('shop');
+Route::get('map/{map}', 'HomeController@show')->name('map');
 
 Auth::routes();
 
@@ -31,8 +31,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('categories/destroy', 'CategoriesController@massDestroy')->name('categories.massDestroy');
     Route::resource('categories', 'CategoriesController');
 
-    // Shops
-    Route::delete('shops/destroy', 'ShopsController@massDestroy')->name('shops.massDestroy');
-    Route::post('shops/media', 'ShopsController@storeMedia')->name('shops.storeMedia');
-    Route::resource('shops', 'ShopsController');
+    // Maps
+    Route::delete('maps/destroy', 'MapsController@massDestroy')->name('maps.massDestroy');
+    Route::post('maps/media', 'MapsController@storeMedia')->name('maps.storeMedia');
+    Route::resource('maps', 'MapsController');
 });

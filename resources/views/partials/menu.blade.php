@@ -54,13 +54,13 @@
                     </a>
                 </li>
             @endcan
-            @can('shop_access')
+            @can('map_access')
                 <li class="nav-item">
-                    <a href="{{ route("admin.shops.index") }}" class="nav-link {{ request()->is('admin/shops') || request()->is('admin/shops/*') ? 'active' : '' }}">
-                        <i class="fa-fw fas fa-shopping-basket nav-icon">
+                    <a href="{{ route("admin.maps.index") }}" class="nav-link {{ request()->is('admin/maps') || request()->is('admin/maps/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-map nav-icon">
 
                         </i>
-                        {{ trans('cruds.shop.title') }}
+                        {{ trans('cruds.map.title') }}
                     </a>
                 </li>
             @endcan

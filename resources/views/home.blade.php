@@ -7,7 +7,7 @@
             <div class="content-box content-single">
                 <article class="post-8 page type-page status-publish hentry">
                     <header>
-                        <h1 class="entry-title">{{ request()->filled('search') || request()->filled('category') ? 'Search results' : 'All Shops' }}</h1></header>
+                        <h1 class="entry-title">{{ request()->filled('search') || request()->filled('category') ? 'Search results' : 'All Locations' }}</h1></header>
                     <div class="entry-content entry-summary">
                         <div class="geodir-search-container geodir-advance-search-default" data-show-adv="default">
                             <form class="geodir-listing-search gd-search-bar-style" name="geodir-listing-search" action="{{ route('home') }}" method="get">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="geodir-loop-container">
                             <ul class="geodir-category-list-view clearfix gridview_onethird geodir-listing-posts geodir-gridview gridview_onethird">
-                                @foreach($shops as $shop)
+                                @foreach($maps as $map)
                                     <li class="gd_place type-gd_place status-publish has-post-thumbnail">
                                         <div class="gd-list-item-left ">
                                             <div class="geodir-post-slider">
@@ -41,8 +41,8 @@
                                                     <div class="geodir-image-wrapper">
                                                         <ul class="geodir-post-image geodir-images clearfix">
                                                             <li>
-                                                                <a href='{{ route('shop', $shop->id) }}'>
-                                                                    <img src="{{ $shop->thumbnail }}" width="1440" height="960" class="geodir-lazy-load align size-medium_large" />
+                                                                <a href='{{ route('map', $map->id) }}'>
+                                                                    <img src="{{ $map->thumbnail }}" width="1440" height="960" class="geodir-lazy-load align size-medium_large" />
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -52,23 +52,23 @@
                                         </div>
                                         <div class="gd-list-item-right ">
                                             <div class="geodir-post-title">
-                                                <h2 class="geodir-entry-title"> <a href="{{ route('shop', $shop->id) }}" title="View: {{ $shop->name }}">{{ $shop->name }}</a></h2></div>
-                                            @foreach($shop->categories as $category)
+                                                <h2 class="geodir-entry-title"> <a href="{{ route('map', $map->id) }}" title="View: {{ $map->name }}">{{ $map->name }}</a></h2></div>
+                                            @foreach($map->categories as $category)
                                                 <div class="gd-badge-meta gd-badge-alignleft" title="{{ $category->name }}">
                                                     <div class="gd-badge" style="background-color:#ffb100;color:#ffffff;"><i class="fas fa-certificate"></i> <span class='gd-secondary'>{{ $category->name }}</span></div>
                                                 </div>
                                             @endforeach
-                                            @if($shop->days->count())
+                                            @if($map->days->count())
                                                 <div class="geodir-post-meta-container">
-                                                    <div class="geodir_post_meta gd-bh-show-field gd-lv-s-2 geodir-field-business_hours gd-bh-toggled gd-bh-{{ $shop->working_hours->isOpen() ? 'open' : 'close' }}" style="clear:both;">
+                                                    <div class="geodir_post_meta gd-bh-show-field gd-lv-s-2 geodir-field-business_hours gd-bh-toggled gd-bh-{{ $map->working_hours->isOpen() ? 'open' : 'close' }}" style="clear:both;">
                                                         <span class="geodir-i-business_hours geodir-i-biz-hours">
-                                                            <i class="fas fa-clock" aria-hidden="true"></i><font>{{ $shop->working_hours->isOpen() ? 'Opened' : 'Closed' }} now</font>
+                                                            <i class="fas fa-clock" aria-hidden="true"></i><font>{{ $map->working_hours->isOpen() ? 'Opened' : 'Closed' }} now</font>
                                                         </span>
                                                     </div>
                                                 </div>
                                             @endif
                                             <div class="geodir-post-content-container">
-                                                <div class="geodir_post_meta  geodir-field-post_content" style='max-height:120px;overflow:hidden;'>{{ $shop->description }} <a href='{{ route('shop', $shop->id) }}' class='gd-read-more  gd-read-more-fade'>Read more...</a></div>
+                                                <div class="geodir_post_meta  geodir-field-post_content" style='max-height:120px;overflow:hidden;'>{{ $map->description }} <a href='{{ route('map', $map->id) }}' class='gd-read-more  gd-read-more-fade'>Read more...</a></div>
                                             </div>
                                         </div>
                                     </li>
@@ -76,7 +76,7 @@
                             </ul>
                             <div class="clear"></div>
                         </div>
-                        {{ $shops->appends(request()->query())->links('partials.pagination') }}
+                        {{ $maps->appends(request()->query())->links('partials.pagination') }}
                     </div>
                     <footer class="entry-footer"></footer>
                 </article>
@@ -109,7 +109,7 @@
 	  	}
 		var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         var image = new google.maps.MarkerImage("assets/images/pin.png", null, null, null, new google.maps.Size(40,52));
-        var places = @json($mapShops);
+        var places = @json($mapMaps);
 
         for(place in places)
         {
@@ -148,10 +148,10 @@
                                         <li>
                                             <div class="geodir-post-title">
                                                 <h4 class="geodir-entry-title">
-                                                    <a href="{{ route('shop', '') }}/`+place.id+`" title="View: `+place.name+`">`+place.name+`</a>
+                                                    <a href="{{ route('map', '') }}/`+place.id+`" title="View: `+place.name+`">`+place.name+`</a>
                                                 </h4>
                                             </div>
-                                            <a href="{{ route('shop', '') }}/`+place.id+`"><img src="`+place.thumbnail+`" alt="`+place.name+`" class="align size-medium_large" width="1400" height="930"></a>
+                                            <a href="{{ route('map', '') }}/`+place.id+`"><img src="`+place.thumbnail+`" alt="`+place.name+`" class="align size-medium_large" width="1400" height="930"></a>
                                         </li>
                                     </ul>
                                 </div>

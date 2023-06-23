@@ -1,9 +1,9 @@
 <?php
 
-use App\Shop;
+use App\Map;
 use Illuminate\Database\Seeder;
 
-class DayShopTableSeeder extends Seeder
+class DayMapTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,11 +44,11 @@ class DayShopTableSeeder extends Seeder
                 'to_minutes' => '00',
             ],
         ];
-        $shops = Shop::all();
+        $maps = Map::all();
         
-        foreach($shops as $shop)
+        foreach($maps as $map)
         {
-            $shop->days()->sync($days);
+            $map->days()->sync($days);
         } 
     }
 }

@@ -94,23 +94,23 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => '22',
-                'title' => 'shop_create',
+                'title' => 'map_create',
             ],
             [
                 'id'    => '23',
-                'title' => 'shop_edit',
+                'title' => 'map_edit',
             ],
             [
                 'id'    => '24',
-                'title' => 'shop_show',
+                'title' => 'map_show',
             ],
             [
                 'id'    => '25',
-                'title' => 'shop_delete',
+                'title' => 'map_delete',
             ],
             [
                 'id'    => '26',
-                'title' => 'shop_access',
+                'title' => 'map_access',
             ],
         ];
 
