@@ -9,8 +9,13 @@
 
                 <form method="POST" action="{{ route('register') }}">
                     {{ csrf_field() }}
-                    <h1>{{ trans('panel.site_title') }}</h1>
-                    <p class="text-muted">{{ trans('global.register') }}</p>
+                    <h3 class="d-flex align-items-center justify-content-between">
+                        <i class="fa fa-user" style="color:#1c448a"></i>
+                        <div style="color:#e67817">User Register</div>
+                        <img src="{{ asset('assets/images/logo.jpg') }}" height="28px"/>
+                    </h3>
+
+                    <hr/>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">

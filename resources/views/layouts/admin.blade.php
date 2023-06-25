@@ -30,8 +30,8 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-            <span class="navbar-brand-full">{{ trans('panel.site_title') }}</span>
-            <span class="navbar-brand-minimized">{{ trans('panel.site_title') }}</span>
+            <span class="navbar-brand-full align-items-center justify-content-between col-12"><img src="{{ asset('assets/images/logo.jpg') }}" height="28px"/> <strong>BARATIM</strong></span>
+            <span class="navbar-brand-minimized"><img src="{{ asset('assets/images/logo.jpg') }}" height="32px"/></span>
         </a>
         <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
             <span class="navbar-toggler-icon"></span>

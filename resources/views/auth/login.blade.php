@@ -4,9 +4,13 @@
     <div class="col-md-6">
         <div class="card mx-4">
             <div class="card-body p-4">
-                <h1>{{ trans('panel.site_title') }}</h1>
+                <h3 class="d-flex align-items-center justify-content-between">
+                    <i class="fa fa-user" style="color:#1c448a"></i>
+                    <div style="color:#e67817">User Login</div>
+                    <img src="{{ asset('assets/images/logo.jpg') }}" height="28px"/>
+                </h3>
 
-                <p class="text-muted">{{ trans('global.login') }}</p>
+                <hr/>
 
                 @if(session('status'))
                     <div class="alert alert-success" role="alert">
