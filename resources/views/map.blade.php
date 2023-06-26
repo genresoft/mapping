@@ -53,9 +53,9 @@
                                                 <p>Description: {{ $map->description }}</p>
                                                 @if($map->days->count())
                                                     @if($map->working_hours->currentOpenRange(now()))
-                                                        <p>Shop is open and will close at {{ $map->working_hours->currentOpenRange(now())->end() }}.</p>
+                                                        <p>Map is open and will close at {{ $map->working_hours->currentOpenRange(now())->end() }}.</p>
                                                     @else
-                                                        <p>Shop is closed since {{ $map->working_hours->previousClose(now())->format('l H:i') }}
+                                                        <p>Map is closed since {{ $map->working_hours->previousClose(now())->format('l H:i') }}
                                                             and will re-open at {{ $map->working_hours->nextOpen(now())->format('l H:i') }}</p>
                                                     @endif
                                                 @endif
