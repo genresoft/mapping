@@ -161,7 +161,7 @@ $(function(){
 });
 </script>
 @if($map->latitude && $map->longitude)
-    <script type='text/javascript' src='https://maps.google.com/maps/api/js?language=en&key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&region=GB'></script>
+    <script type='text/javascript' src='https://maps.google.com/maps/api/js?language=en&key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&region=ID'></script>
     <script defer>
         function initialize() {
             var latLng = new google.maps.LatLng({{ $map->latitude }}, {{ $map->longitude }});

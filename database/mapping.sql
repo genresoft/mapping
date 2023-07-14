@@ -14,6 +14,23 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+
+-- Dumping database structure for mapping
+DROP DATABASE IF EXISTS `mapping`;
+CREATE DATABASE IF NOT EXISTS `mapping` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `mapping`;
+
+-- Dumping structure for table mapping.categories
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.categories: ~50 rows (approximately)
 REPLACE INTO `categories` (`id`, `name`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Banjaranyar', '2023-06-23 09:10:29', '2023-06-23 09:18:52', NULL),
@@ -67,7 +84,18 @@ REPLACE INTO `categories` (`id`, `name`, `created_at`, `updated_at`, `deleted_at
 	(49, 'Quaerat nostrum in porro.', '2023-06-23 09:10:29', '2023-06-26 04:48:48', '2023-06-26 04:48:48'),
 	(50, 'Voluptatem molestiae sunt in et.', '2023-06-23 09:10:29', '2023-06-26 04:48:48', '2023-06-26 04:48:48');
 
--- Dumping data for table mapping.category_map: ~10 rows (approximately)
+-- Dumping structure for table mapping.category_map
+DROP TABLE IF EXISTS `category_map`;
+CREATE TABLE IF NOT EXISTS `category_map` (
+  `map_id` int unsigned NOT NULL,
+  `category_id` int unsigned NOT NULL,
+  KEY `map_id_fk_667152` (`map_id`),
+  KEY `category_id_fk_667152` (`category_id`),
+  CONSTRAINT `category_id_fk_667152` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `map_id_fk_667152` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table mapping.category_map: ~9 rows (approximately)
 REPLACE INTO `category_map` (`map_id`, `category_id`) VALUES
 	(8, 8),
 	(9, 9),
@@ -80,6 +108,16 @@ REPLACE INTO `category_map` (`map_id`, `category_id`) VALUES
 	(6, 17),
 	(7, 17);
 
+-- Dumping structure for table mapping.days
+DROP TABLE IF EXISTS `days`;
+CREATE TABLE IF NOT EXISTS `days` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.days: ~7 rows (approximately)
 REPLACE INTO `days` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'monday', '2023-06-23 09:10:29', '2023-06-23 09:10:29'),
@@ -89,6 +127,21 @@ REPLACE INTO `days` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(5, 'friday', '2023-06-23 09:10:29', '2023-06-23 09:10:29'),
 	(6, 'saturday', '2023-06-23 09:10:29', '2023-06-23 09:10:29'),
 	(7, 'sunday', '2023-06-23 09:10:29', '2023-06-23 09:10:29');
+
+-- Dumping structure for table mapping.day_map
+DROP TABLE IF EXISTS `day_map`;
+CREATE TABLE IF NOT EXISTS `day_map` (
+  `day_id` int unsigned NOT NULL,
+  `map_id` int unsigned NOT NULL,
+  `from_hours` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `from_minutes` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_hours` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `to_minutes` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  KEY `day_map_day_id_foreign` (`day_id`),
+  KEY `day_map_map_id_foreign` (`map_id`),
+  CONSTRAINT `day_map_day_id_foreign` FOREIGN KEY (`day_id`) REFERENCES `days` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `day_map_map_id_foreign` FOREIGN KEY (`map_id`) REFERENCES `maps` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.day_map: ~50 rows (approximately)
 REPLACE INTO `day_map` (`day_id`, `map_id`, `from_hours`, `from_minutes`, `to_hours`, `to_minutes`) VALUES
@@ -143,6 +196,25 @@ REPLACE INTO `day_map` (`day_id`, `map_id`, `from_hours`, `from_minutes`, `to_ho
 	(4, 10, '09', '00', '18', '00'),
 	(5, 10, '12', '00', '22', '00');
 
+-- Dumping structure for table mapping.maps
+DROP TABLE IF EXISTS `maps`;
+CREATE TABLE IF NOT EXISTS `maps` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_by_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `created_by_fk_667277` (`created_by_id`),
+  CONSTRAINT `created_by_fk_667277` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.maps: ~10 rows (approximately)
 REPLACE INTO `maps` (`id`, `name`, `description`, `address`, `latitude`, `longitude`, `active`, `created_at`, `updated_at`, `deleted_at`, `created_by_id`) VALUES
 	(1, 'Desa Bahara', 'Desa Bahara, Kecamatan Panjalu, Kabupaten Ciamis merupakan Desa hasil pemekaran dari Desa Panjalu pada tahun 1983. Desa Bahara tersohor akan salah satu kesenian tradisionalnya yang bernama kesenian Debus Barani. Debus Barani merupakan seni tradisional peninggalan Kerajaan Panjalu yang diperkenalkan pertama kali oleh Eyang Sanghyang Panji Barani, beliau merupakan putra ke 3 dari Raja Sanghyang Cakradewa Kerajaan Cipanjalu. Pada zaman dahulu, Debus digunakan untuk beladiri dan menumpas musuh-musuh, namun seiring dengan berkembangnya zaman secara perlahan, Debus beralih menjadi suatu kesenian khas Desa Bahara', 'Jl. Bahara, Bahara, Kec. Panjalu, Kabupaten Ciamis, Jawa Barat 46264', '51.5174361', '-0.1562695000000076', 1, '2023-06-23 09:10:29', '2023-06-26 04:45:09', NULL, 2),
@@ -156,7 +228,31 @@ REPLACE INTO `maps` (`id`, `name`, `description`, `address`, `latitude`, `longit
 	(9, 'Beber', 'Amet quis vel aut veniam. Iste ipsum quo vel est illo. Dolor est minima corporis quaerat maxime sit impedit. Velit reprehenderit expedita aut et assumenda sequi nostrum.', 'Lidl, Sydenham Road, London', '51.4253218', '-0.04806940000003124', 1, '2023-06-23 09:10:35', '2023-06-26 04:48:28', '2023-06-26 04:48:28', 10),
 	(10, 'Bangbayang', 'Impedit molestiae qui voluptatum et. Alias quod nostrum nobis magni vel eligendi quia. Eaque quibusdam id recusandae deleniti est itaque. Dolorum ut minima sed voluptas aut.', 'CHANEL Old Spitalfields Market, Commercial Street, London', '51.51934869999999', '-0.07468889999995554', 1, '2023-06-23 09:10:36', '2023-06-26 04:48:24', '2023-06-26 04:48:24', 11);
 
--- Dumping data for table mapping.media: ~43 rows (approximately)
+-- Dumping structure for table mapping.media
+DROP TABLE IF EXISTS `media`;
+CREATE TABLE IF NOT EXISTS `media` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint unsigned NOT NULL,
+  `uuid` char(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `collection_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `file_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mime_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `disk` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `conversions_disk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `size` bigint unsigned NOT NULL,
+  `manipulations` json NOT NULL,
+  `custom_properties` json NOT NULL,
+  `responsive_images` json NOT NULL,
+  `order_column` int unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `media_model_type_model_id_index` (`model_type`,`model_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table mapping.media: ~41 rows (approximately)
 REPLACE INTO `media` (`id`, `model_type`, `model_id`, `uuid`, `collection_name`, `name`, `file_name`, `mime_type`, `disk`, `conversions_disk`, `size`, `manipulations`, `custom_properties`, `responsive_images`, `order_column`, `created_at`, `updated_at`) VALUES
 	(17, 'App\\Map', 8, 'fe3de14b-6586-45b1-9fe1-1398a6a9e902', 'photos', 'a2', 'a2.jpg', 'image/jpeg', 'public', 'public', 73083, '[]', '{"generated_conversions": {"thumb": true}}', '[]', 17, '2023-06-23 09:10:34', '2023-06-23 09:10:35'),
 	(18, 'App\\Map', 8, '041c335c-f824-49b6-af5f-1f63df0f5bf6', 'photos', 'a6', 'a6.jpg', 'image/jpeg', 'public', 'public', 67594, '[]', '{"generated_conversions": {"thumb": true}}', '[]', 18, '2023-06-23 09:10:35', '2023-06-23 09:10:35'),
@@ -202,7 +298,16 @@ REPLACE INTO `media` (`id`, `model_type`, `model_id`, `uuid`, `collection_name`,
 	(63, 'App\\Map', 5, '57109278-74db-4fab-a6e9-0903952c7168', 'photos', '649978f325049_100_0080_0097', '649978f325049_100_0080_0097.JPG', 'image/jpeg', 'public', 'public', 421368, '[]', '{"generated_conversions": {"thumb": true}}', '[]', 60, '2023-06-26 04:39:35', '2023-06-26 04:39:35'),
 	(64, 'App\\Map', 5, 'e7587f77-6e5b-4b24-9be1-b822481ee93f', 'photos', '649978f367796_100_0080_0143', '649978f367796_100_0080_0143.JPG', 'image/jpeg', 'public', 'public', 440591, '[]', '{"generated_conversions": {"thumb": true}}', '[]', 61, '2023-06-26 04:39:35', '2023-06-26 04:39:36');
 
--- Dumping data for table mapping.migrations: ~18 rows (approximately)
+-- Dumping structure for table mapping.migrations
+DROP TABLE IF EXISTS `migrations`;
+CREATE TABLE IF NOT EXISTS `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table mapping.migrations: ~0 rows (approximately)
 REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(1, '2014_10_12_100000_create_password_resets_table', 1),
 	(2, '2016_06_01_000001_create_oauth_auth_codes_table', 1),
@@ -223,19 +328,107 @@ REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(17, '2019_11_29_111745_create_days_table', 1),
 	(18, '2019_11_29_115228_create_day_map_pivot_table', 1);
 
+-- Dumping structure for table mapping.oauth_access_tokens
+DROP TABLE IF EXISTS `oauth_access_tokens`;
+CREATE TABLE IF NOT EXISTS `oauth_access_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `client_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_access_tokens_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.oauth_access_tokens: ~0 rows (approximately)
+
+-- Dumping structure for table mapping.oauth_auth_codes
+DROP TABLE IF EXISTS `oauth_auth_codes`;
+CREATE TABLE IF NOT EXISTS `oauth_auth_codes` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned NOT NULL,
+  `client_id` bigint unsigned NOT NULL,
+  `scopes` text COLLATE utf8mb4_unicode_ci,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_auth_codes_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.oauth_auth_codes: ~0 rows (approximately)
 
+-- Dumping structure for table mapping.oauth_clients
+DROP TABLE IF EXISTS `oauth_clients`;
+CREATE TABLE IF NOT EXISTS `oauth_clients` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `secret` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `provider` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `redirect` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `personal_access_client` tinyint(1) NOT NULL,
+  `password_client` tinyint(1) NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_clients_user_id_index` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.oauth_clients: ~0 rows (approximately)
+
+-- Dumping structure for table mapping.oauth_personal_access_clients
+DROP TABLE IF EXISTS `oauth_personal_access_clients`;
+CREATE TABLE IF NOT EXISTS `oauth_personal_access_clients` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` bigint unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.oauth_personal_access_clients: ~0 rows (approximately)
 
+-- Dumping structure for table mapping.oauth_refresh_tokens
+DROP TABLE IF EXISTS `oauth_refresh_tokens`;
+CREATE TABLE IF NOT EXISTS `oauth_refresh_tokens` (
+  `id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `revoked` tinyint(1) NOT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `oauth_refresh_tokens_access_token_id_index` (`access_token_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.oauth_refresh_tokens: ~0 rows (approximately)
 
--- Dumping data for table mapping.password_resets: ~1 rows (approximately)
+-- Dumping structure for table mapping.password_resets
+DROP TABLE IF EXISTS `password_resets`;
+CREATE TABLE IF NOT EXISTS `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table mapping.password_resets: ~0 rows (approximately)
 REPLACE INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 	('admin@admin.com', '$2y$10$IRJwXZAXd3Q5HUD7ihrnt.FRLtSqi3TCvZcbqLkghDAh5tg1rYY52', '2023-06-25 03:36:04');
+
+-- Dumping structure for table mapping.permissions
+DROP TABLE IF EXISTS `permissions`;
+CREATE TABLE IF NOT EXISTS `permissions` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.permissions: ~26 rows (approximately)
 REPLACE INTO `permissions` (`id`, `title`, `created_at`, `updated_at`, `deleted_at`) VALUES
@@ -266,7 +459,18 @@ REPLACE INTO `permissions` (`id`, `title`, `created_at`, `updated_at`, `deleted_
 	(25, 'map_delete', NULL, NULL, NULL),
 	(26, 'map_access', NULL, NULL, NULL);
 
--- Dumping data for table mapping.permission_role: ~30 rows (approximately)
+-- Dumping structure for table mapping.permission_role
+DROP TABLE IF EXISTS `permission_role`;
+CREATE TABLE IF NOT EXISTS `permission_role` (
+  `role_id` int unsigned NOT NULL,
+  `permission_id` int unsigned NOT NULL,
+  KEY `role_id_fk_666897` (`role_id`),
+  KEY `permission_id_fk_666897` (`permission_id`),
+  CONSTRAINT `permission_id_fk_666897` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `role_id_fk_666897` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Dumping data for table mapping.permission_role: ~26 rows (approximately)
 REPLACE INTO `permission_role` (`role_id`, `permission_id`) VALUES
 	(1, 1),
 	(1, 2),
@@ -299,10 +503,32 @@ REPLACE INTO `permission_role` (`role_id`, `permission_id`) VALUES
 	(2, 24),
 	(2, 26);
 
+-- Dumping structure for table mapping.roles
+DROP TABLE IF EXISTS `roles`;
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Dumping data for table mapping.roles: ~2 rows (approximately)
 REPLACE INTO `roles` (`id`, `title`, `created_at`, `updated_at`, `deleted_at`) VALUES
 	(1, 'Admin', NULL, NULL, NULL),
 	(2, 'User', NULL, NULL, NULL);
+
+-- Dumping structure for table mapping.role_user
+DROP TABLE IF EXISTS `role_user`;
+CREATE TABLE IF NOT EXISTS `role_user` (
+  `user_id` int unsigned NOT NULL,
+  `role_id` int unsigned NOT NULL,
+  KEY `user_id_fk_666906` (`user_id`),
+  KEY `role_id_fk_666906` (`role_id`),
+  CONSTRAINT `role_id_fk_666906` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_id_fk_666906` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.role_user: ~11 rows (approximately)
 REPLACE INTO `role_user` (`user_id`, `role_id`) VALUES
@@ -317,6 +543,22 @@ REPLACE INTO `role_user` (`user_id`, `role_id`) VALUES
 	(11, 2),
 	(1, 1),
 	(2, 1);
+
+-- Dumping structure for table mapping.users
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` datetime DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table mapping.users: ~11 rows (approximately)
 REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`) VALUES

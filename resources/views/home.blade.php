@@ -87,7 +87,7 @@
 @endsection
 
 @section('scripts')
-<script type='text/javascript' src='https://maps.google.com/maps/api/js?language=en&key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&region=GB'></script>
+<script type='text/javascript' src='https://maps.google.com/maps/api/js?language=id&key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&region=ID'></script>
 <script defer>
 	function initialize() {
 		var mapOptions = {
@@ -98,7 +98,7 @@
 			zoomControlOptions: {
   				style:google.maps.ZoomControlStyle.DEFAULT
 			},
-			center: new google.maps.LatLng({{ $latitude }}, {{ $longitude }}),
+			center: new google.maps.LatLng({{ '-7.330080600000001' }}, {{ '108.365447' }}),
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			scrollwheel: false,
 			panControl:false,
