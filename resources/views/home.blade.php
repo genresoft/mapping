@@ -98,7 +98,7 @@
 			zoomControlOptions: {
   				style:google.maps.ZoomControlStyle.DEFAULT
 			},
-			center: new google.maps.LatLng({{ '-7.330080600000001' }}, {{ '108.365447' }}),
+			center: new google.maps.LatLng({{ '-7.329952906116013' }}, {{ '108.36540408465646' }}),
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 			scrollwheel: false,
 			panControl:false,
